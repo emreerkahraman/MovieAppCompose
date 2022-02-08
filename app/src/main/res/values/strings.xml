@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Movie App Compose</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="popular">Popular</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="movie_detail">MOVIE DETAIL</string>
+    <string name="synopsis">SYNOPSIS</string>
+    <string name="rating">Rating</string>
+    <string name="category">Category</string>
+</resources>
