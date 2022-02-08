@@ -1,12 +1,10 @@
 package com.emreerkahraman.movieappcompose.di.network
 
-import android.content.Context
 import com.emreerkahraman.movieappcompose.api.ApiKeyInterceptor
 import com.emreerkahraman.movieappcompose.api.TmdbService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -23,7 +21,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor, @ApplicationContext appContext: Context): OkHttpClient {
+    fun provideOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)
             .build()

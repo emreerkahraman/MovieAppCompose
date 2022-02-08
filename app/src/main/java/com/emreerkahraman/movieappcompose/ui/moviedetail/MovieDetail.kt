@@ -3,11 +3,24 @@ package com.emreerkahraman.movieappcompose.ui.moviedetail
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -24,12 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.emreerkahraman.movieappcompose.R
+import com.emreerkahraman.movieappcompose.model.Movie
 import com.emreerkahraman.movieappcompose.model.Status
 import com.emreerkahraman.movieappcompose.ui.theme.poppinsFamily
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.fade
-import com.google.accompanist.placeholder.material.placeholder
 
 @ExperimentalPagerApi
 @Composable
@@ -45,130 +56,10 @@ fun MovieDetail(viewModel: MovieDetailViewModel, movieId: String, onClickBack: (
 
     when (movieDetailViewState.status) {
         Status.SUCCESS -> {
-
-            val movie = movieDetailViewState.movie
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-
-                Toolbar(title = stringResource(R.string.movie_detail)) {
-                    onClickBack.invoke()
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-
-                    Image(
-                        painter = rememberImagePainter("https://image.tmdb.org/t/p/w342/${movie?.posterPath}"),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(200.dp)
-                            .height(300.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                    )
-
-                    Column(
-                        modifier = Modifier.height(300.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .width(80.dp)
-                                .height(80.dp),
-                            backgroundColor = MaterialTheme.colors.primary,
-                            border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
-                        ) {
-
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    painter = rememberImagePainter(R.drawable.ic_category),
-                                    contentDescription = null
-                                )
-                                Text(text = "Category")
-                                Text(text = "Category")
-                            }
-                        }
-                        Card(
-                            modifier = Modifier
-                                .width(80.dp)
-                                .height(80.dp),
-                            backgroundColor = MaterialTheme.colors.primary,
-                            border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    painter = rememberImagePainter(R.drawable.ic_duration),
-                                    contentDescription = null
-                                )
-                                Text(text = stringResource(R.string.duration))
-                                Text(text = movie?.runtime.toString())
-                            }
-                        }
-                        Card(
-                            modifier = Modifier
-                                .width(80.dp)
-                                .height(80.dp),
-                            backgroundColor = MaterialTheme.colors.primary,
-                            border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
-                        ) {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Icon(
-                                    painter = rememberImagePainter(R.drawable.ic_rating),
-                                    contentDescription = null
-                                )
-                                Text(text = stringResource(R.string.rating))
-                                Text(text = movie?.voteAverage.toString())
-                            }
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = movie?.title?.toUpperCase().toString(),
-                    fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Divider(color = MaterialTheme.colors.secondary)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = stringResource(R.string.synopsis),
-                    fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = movie?.overview.toString(),
-                    fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Justify
-                )
-            }
+            MovieDetail(movieDetailViewState.movie, onClickBack)
         }
         Status.LOADING -> {
-            MovieDetailLoading()
+            MovieDetailPlaceHolder()
         }
         Status.ERROR -> {
             Log.i("error", movieDetailViewState.error.toString())
@@ -176,10 +67,11 @@ fun MovieDetail(viewModel: MovieDetailViewModel, movieId: String, onClickBack: (
     }
 }
 
-@ExperimentalPagerApi
 @Composable
-fun MovieDetailLoading() {
-
+private fun MovieDetail(
+    movie: Movie?,
+    onClickBack: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -187,115 +79,128 @@ fun MovieDetailLoading() {
             .verticalScroll(rememberScrollState())
     ) {
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {
-            }) {
-                Icon(
-                    Icons.Default.ArrowBack, contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .placeholder(
-                            visible = true,
-                            highlight = PlaceholderHighlight.fade(),
-                        )
-                )
-            }
-            Text(
-                text = "",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .placeholder(
-                        visible = true,
-                        highlight = PlaceholderHighlight.fade(),
-                    )
-            )
+        Toolbar(title = stringResource(R.string.movie_detail)) {
+            onClickBack.invoke()
         }
         Spacer(modifier = Modifier.height(16.dp))
-
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
-            Card(
-                modifier = Modifier
-                    .width(200.dp)
-                    .height(300.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .placeholder(
-                        visible = true,
-                        highlight = PlaceholderHighlight.fade(),
-                    )
-            ) {}
-
+            PosterImage(movie?.posterPath)
             Column(
                 modifier = Modifier.height(300.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-
-                repeat(3) {
-                    Card(
-                        modifier = Modifier
-                            .width(80.dp)
-                            .height(80.dp)
-                            .placeholder(
-                                visible = true,
-                                highlight = PlaceholderHighlight.fade(),
-                            ),
-                        backgroundColor = MaterialTheme.colors.primary,
-                        border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
-                    ) {}
-                }
+                CategoryCard()
+                RuntimeCard(movie?.runtime.toString())
+                RatingCard(movie?.voteAverage.toString())
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
-            text = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(24.dp)
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade()
-                ),
+            text = movie?.title?.uppercase().toString(),
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Bold
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        Divider(
-            color = MaterialTheme.colors.secondary,
-            modifier = Modifier
-                .height(1.dp)
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade()
-                )
-        )
-
+        Divider(color = MaterialTheme.colors.secondary)
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
-            text = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade()
-                )
+            text = stringResource(R.string.synopsis),
+            fontFamily = poppinsFamily,
+            fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
-            text = "",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade()
-                )
+            text = movie?.overview.toString(),
+            fontFamily = poppinsFamily,
+            fontWeight = FontWeight.Normal,
+            textAlign = TextAlign.Justify
         )
+    }
+}
+
+@Composable
+private fun PosterImage(posterPath: String?) {
+    Image(
+        painter = rememberImagePainter("https://image.tmdb.org/t/p/w342/$posterPath"),
+        contentDescription = null,
+        modifier = Modifier
+            .width(200.dp)
+            .height(300.dp)
+            .clip(RoundedCornerShape(8.dp))
+    )
+}
+
+@Composable
+private fun CategoryCard() {
+    Card(
+        modifier = Modifier
+            .width(80.dp)
+            .height(80.dp),
+        backgroundColor = MaterialTheme.colors.primary,
+        border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
+    ) {
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = rememberImagePainter(R.drawable.ic_category),
+                contentDescription = null
+            )
+            Text(text = "Category")
+            Text(text = "Category")
+        }
+    }
+}
+
+@Composable
+private fun RuntimeCard(runtime: String?) {
+    Card(
+        modifier = Modifier
+            .width(80.dp)
+            .height(80.dp),
+        backgroundColor = MaterialTheme.colors.primary,
+        border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = rememberImagePainter(R.drawable.ic_duration),
+                contentDescription = null
+            )
+            Text(text = stringResource(R.string.duration))
+            Text(text = runtime.toString())
+        }
+    }
+}
+
+@Composable
+private fun RatingCard(rating: String?) {
+    Card(
+        modifier = Modifier
+            .width(80.dp)
+            .height(80.dp),
+        backgroundColor = MaterialTheme.colors.primary,
+        border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = rememberImagePainter(R.drawable.ic_rating),
+                contentDescription = null
+            )
+            Text(text = stringResource(R.string.rating))
+            Text(text = rating.toString())
+        }
     }
 }
 
