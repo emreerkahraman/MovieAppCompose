@@ -1,4 +1,4 @@
-package com.emreerkahraman.movieappcompose.ui.movielist
+package com.emreerkahraman.movieappcompose.ui.moviedetail
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -21,16 +21,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.emreerkahraman.movieappcompose.R
 import com.emreerkahraman.movieappcompose.model.Status
-import com.emreerkahraman.movieappcompose.ui.moviedetail.MovieDetailViewModel
-import com.emreerkahraman.movieappcompose.ui.moviedetail.MovieDetailViewState
 import com.emreerkahraman.movieappcompose.ui.theme.poppinsFamily
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
-import com.google.accompanist.placeholder.material.shimmer
 
 
 @ExperimentalPagerApi
@@ -51,22 +50,13 @@ fun MovieDetail(viewModel: MovieDetailViewModel, movieId: String, onClickBack: (
             val movie = movieDetailViewState.movie
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())) {
-                TopAppBar(
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            onClickBack.invoke()
-                        }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = null)
 
-                        }
-                    },
-                    title = {
-                        Text(text = stringResource(id = R.string.movie_detail))
-                    },
-                    elevation = 0.dp
-                )
+                Toolbar(title = stringResource(R.string.movie_detail)) {
+                    onClickBack.invoke()
+                }
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
 
@@ -113,8 +103,8 @@ fun MovieDetail(viewModel: MovieDetailViewModel, movieId: String, onClickBack: (
                                 horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(painter = rememberImagePainter(R.drawable.ic_duration),
                                     contentDescription = null)
-                                Text(text = "Category")
-                                Text(text = stringResource(R.string.category))
+                                Text(text = stringResource(R.string.duration))
+                                Text(text = movie?.runtime.toString())
                             }
                         }
                         Card(
@@ -187,24 +177,29 @@ fun MovieDetailLoading() {
         .padding(horizontal = 16.dp)
         .verticalScroll(rememberScrollState())) {
 
-        TopAppBar(
-            navigationIcon = {
-                IconButton(onClick = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = {
 
-                }) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = null)
+            }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .placeholder(
+                            visible = true,
+                            highlight = PlaceholderHighlight.fade(),
+                        ))
 
-                }
-            },
-            title = {
-                Text(text = stringResource(R.string.movie_detail),
-                    modifier = Modifier.placeholder(
+            }
+            Text(text = "",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .placeholder(
                         visible = true,
-                        highlight = PlaceholderHighlight.shimmer())
-                )
-            },
-            elevation = 0.dp
-        )
+                        highlight = PlaceholderHighlight.fade(),
+                    )
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
 
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
@@ -215,21 +210,21 @@ fun MovieDetailLoading() {
                     .clip(RoundedCornerShape(8.dp))
                     .placeholder(
                         visible = true,
-                        highlight = PlaceholderHighlight.shimmer(),
+                        highlight = PlaceholderHighlight.fade(),
                     )
             ) {}
 
             Column(modifier = Modifier.height(300.dp),
                 verticalArrangement = Arrangement.SpaceBetween) {
 
-                repeat(3){
+                repeat(3) {
                     Card(
                         modifier = Modifier
                             .width(80.dp)
                             .height(80.dp)
                             .placeholder(
                                 visible = true,
-                                highlight = PlaceholderHighlight.shimmer(),
+                                highlight = PlaceholderHighlight.fade(),
                             ),
                         backgroundColor = MaterialTheme.colors.primary,
                         border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
@@ -248,18 +243,18 @@ fun MovieDetailLoading() {
                 .height(24.dp)
                 .placeholder(
                     visible = true,
-                    highlight = PlaceholderHighlight.shimmer()
+                    highlight = PlaceholderHighlight.fade()
                 ),
             fontFamily = poppinsFamily,
             fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Divider(color = MaterialTheme.colors.secondary,modifier = Modifier
+        Divider(color = MaterialTheme.colors.secondary, modifier = Modifier
             .height(1.dp)
             .placeholder(
                 visible = true,
-                highlight = PlaceholderHighlight.shimmer())
+                highlight = PlaceholderHighlight.fade())
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -269,7 +264,7 @@ fun MovieDetailLoading() {
                 .fillMaxWidth()
                 .placeholder(
                     visible = true,
-                    highlight = PlaceholderHighlight.shimmer())
+                    highlight = PlaceholderHighlight.fade())
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -279,9 +274,27 @@ fun MovieDetailLoading() {
                 .height(150.dp)
                 .placeholder(
                     visible = true,
-                    highlight = PlaceholderHighlight.shimmer()))
+                    highlight = PlaceholderHighlight.fade()))
 
 
     }
 }
+
+@Composable
+fun Toolbar(title: String, onClickBack: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = {
+            onClickBack.invoke()
+        }) {
+            Icon(Icons.Default.ArrowBack, contentDescription = null)
+
+        }
+        Text(text = title,
+            fontFamily = poppinsFamily,
+            fontWeight = FontWeight.Normal, fontSize = 16.sp)
+    }
+}
+
+
+
 

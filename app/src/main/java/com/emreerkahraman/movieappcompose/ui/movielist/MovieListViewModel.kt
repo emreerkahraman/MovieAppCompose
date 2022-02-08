@@ -1,5 +1,6 @@
 package com.emreerkahraman.movieappcompose.ui.movielist
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieListViewModel @Inject constructor(private val movieRepository: MovieRepository) :
     ViewModel() {
-    var nowPlayingViewState = MutableLiveData<NowPlayingViewState>()
-    var popularViewState = MutableLiveData<PopularViewState>()
-    var upcomingMovieState = MutableLiveData<UpcomingMovieState>()
+    var nowPlayingViewState = mutableStateOf(MovieListViewState())
+    var popularViewState = mutableStateOf(MovieListViewState())
+    var upcomingMovieState =mutableStateOf(MovieListViewState())
 
 
     init {
@@ -50,7 +51,7 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
     }
 
     private fun onGetNowPlaying(resource: Resource<NowPlaying?>) {
-        nowPlayingViewState.value = NowPlayingViewState(
+        nowPlayingViewState.value = MovieListViewState(
             status = resource.status,
             error = resource.error?.message,
             movieList = resource.data?.movieList
@@ -58,7 +59,7 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
 
     }
     private fun onGetPopular(resource: Resource<Popular?>) {
-        popularViewState.value = PopularViewState(
+        popularViewState.value = MovieListViewState(
             status = resource.status,
             error = resource.error?.message,
             movieList = resource.data?.movieList
@@ -67,7 +68,7 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
     }
 
     private fun onGetUpcoming(resource: Resource<Upcoming?>) {
-        upcomingMovieState.value = UpcomingMovieState(
+        upcomingMovieState.value = MovieListViewState(
             status = resource.status,
             error = resource.error?.message,
             movieList = resource.data?.movieList
