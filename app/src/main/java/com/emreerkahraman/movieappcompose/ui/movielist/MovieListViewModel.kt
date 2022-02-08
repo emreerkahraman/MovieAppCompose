@@ -1,7 +1,6 @@
 package com.emreerkahraman.movieappcompose.ui.movielist
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emreerkahraman.movieappcompose.di.repository.MovieRepository
@@ -19,8 +18,7 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
     ViewModel() {
     var nowPlayingViewState = mutableStateOf(MovieListViewState())
     var popularViewState = mutableStateOf(MovieListViewState())
-    var upcomingMovieState =mutableStateOf(MovieListViewState())
-
+    var upcomingMovieState = mutableStateOf(MovieListViewState())
 
     init {
         getNowPlaying()
@@ -56,7 +54,6 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
             error = resource.error?.message,
             movieList = resource.data?.movieList
         )
-
     }
     private fun onGetPopular(resource: Resource<Popular?>) {
         popularViewState.value = MovieListViewState(
@@ -64,7 +61,6 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
             error = resource.error?.message,
             movieList = resource.data?.movieList
         )
-
     }
 
     private fun onGetUpcoming(resource: Resource<Upcoming?>) {
@@ -73,8 +69,5 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
             error = resource.error?.message,
             movieList = resource.data?.movieList
         )
-
     }
-
-
 }

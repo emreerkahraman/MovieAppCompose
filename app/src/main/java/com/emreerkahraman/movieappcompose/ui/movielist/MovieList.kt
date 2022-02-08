@@ -18,18 +18,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.emreerkahraman.movieappcompose.R
+import com.emreerkahraman.movieappcompose.model.Movie
 import com.emreerkahraman.movieappcompose.model.Status
 import com.emreerkahraman.movieappcompose.ui.theme.poppinsFamily
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.emreerkahraman.movieappcompose.R
-import com.emreerkahraman.movieappcompose.model.Movie
 
 @ExperimentalPagerApi
 @Composable
 fun MovieList(viewModel: MovieListViewModel, onClickMovie: (Movie) -> Unit) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(rememberScrollState())
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Title(stringResource(R.string.now_playing))
@@ -41,7 +42,6 @@ fun MovieList(viewModel: MovieListViewModel, onClickMovie: (Movie) -> Unit) {
         Title(stringResource(R.string.upcoming))
         UpcomingMovieList(viewModel.upcomingMovieState, onClickMovie = onClickMovie)
         Spacer(modifier = Modifier.height(16.dp))
-
     }
 }
 
@@ -55,8 +55,10 @@ fun NowPlayingMovieList(
     when (nowPlayingState.status) {
 
         Status.SUCCESS -> {
-            MovieListComposable(movieList = nowPlayingState.movieList!!,
-                onClickMovie = onClickMovie)
+            MovieListComposable(
+                movieList = nowPlayingState.movieList!!,
+                onClickMovie = onClickMovie
+            )
         }
 
         Status.LOADING -> {
@@ -67,10 +69,7 @@ fun NowPlayingMovieList(
             Log.i("error", nowPlayingState.error.toString())
         }
     }
-
-
 }
-
 
 @Composable
 fun PopularMovieList(
@@ -80,8 +79,10 @@ fun PopularMovieList(
     val popularViewState: MovieListViewState by popularMovieViewState
     when (popularViewState.status) {
         Status.SUCCESS -> {
-            MovieListComposable(movieList = popularViewState.movieList!!,
-                onClickMovie = onClickMovie)
+            MovieListComposable(
+                movieList = popularViewState.movieList!!,
+                onClickMovie = onClickMovie
+            )
         }
         Status.LOADING -> {
             Loading()
@@ -90,8 +91,6 @@ fun PopularMovieList(
             Log.i("error", popularViewState.error.toString())
         }
     }
-
-
 }
 
 @Composable
@@ -103,8 +102,10 @@ fun UpcomingMovieList(
 
     when (upcomingMovieState.status) {
         Status.SUCCESS -> {
-            MovieListComposable(movieList = upcomingMovieState.movieList!!,
-                onClickMovie = onClickMovie)
+            MovieListComposable(
+                movieList = upcomingMovieState.movieList!!,
+                onClickMovie = onClickMovie
+            )
         }
         Status.LOADING -> {
             Loading()
@@ -113,18 +114,13 @@ fun UpcomingMovieList(
             Log.i("error", upcomingMovieState.error.toString())
         }
     }
-
-
 }
-
-
-
 
 @Composable
 fun MovieListComposable(movieList: List<Movie>, onClickMovie: (Movie) -> Unit) {
     LazyRow {
-        
-        item { 
+
+        item {
             Spacer(modifier = Modifier.width(16.dp))
         }
 
@@ -138,12 +134,14 @@ fun MovieListComposable(movieList: List<Movie>, onClickMovie: (Movie) -> Unit) {
 
 @Composable
 fun Loading() {
-    Box(Modifier
-        .fillMaxWidth()
-        .height(200.dp), contentAlignment = Alignment.Center) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        contentAlignment = Alignment.Center
+    ) {
         CircularProgressIndicator(color = MaterialTheme.colors.primaryVariant)
     }
-
 }
 
 @Composable

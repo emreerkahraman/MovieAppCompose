@@ -33,7 +33,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @ExperimentalPagerApi
 @Composable
 fun MovieApp() {
@@ -58,6 +57,3 @@ fun MovieApp() {
         }
     }
 }
-
-
-

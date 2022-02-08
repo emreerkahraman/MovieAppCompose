@@ -8,11 +8,9 @@ import com.emreerkahraman.movieappcompose.model.Movie
 import com.emreerkahraman.movieappcompose.model.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.flow.collect
-
-
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(private val movieRepository: MovieRepository) : ViewModel() {
@@ -34,14 +32,5 @@ class MovieDetailViewModel @Inject constructor(private val movieRepository: Movi
             error = resource.error?.message,
             movie = resource.data
         )
-
     }
-
-
 }
-
-
-
-
-
-

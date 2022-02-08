@@ -19,22 +19,19 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideApiKeyInterceptor()=ApiKeyInterceptor()
-
+    fun provideApiKeyInterceptor() = ApiKeyInterceptor()
 
     @Singleton
     @Provides
     fun provideOkHttpClient(apiKeyInterceptor: ApiKeyInterceptor, @ApplicationContext appContext: Context): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(apiKeyInterceptor)
-
             .build()
     }
 
-
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(MoshiConverterFactory.create())
@@ -46,5 +43,4 @@ object NetworkModule {
     fun provideTmdbService(retrofit: Retrofit): TmdbService {
         return retrofit.create(TmdbService::class.java)
     }
-
 }

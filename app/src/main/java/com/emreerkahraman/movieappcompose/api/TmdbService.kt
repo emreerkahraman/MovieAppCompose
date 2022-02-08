@@ -10,15 +10,15 @@ import retrofit2.http.Path
 
 interface TmdbService {
 
-     @GET("movie/now_playing")
-     suspend fun getNowPlaying() : Response<NowPlaying>
+    @GET("movie/now_playing")
+    suspend fun getNowPlaying(): Response<NowPlaying>
 
-     @GET("movie/popular")
-     suspend fun getPopular() : Response<Popular>
+    @GET("movie/popular")
+    suspend fun getPopular(): Response<Popular>
 
-     @GET("movie/upcoming")
-     suspend fun getUpcoming() : Response<Upcoming>
+    @GET("movie/upcoming")
+    suspend fun getUpcoming(): Response<Upcoming>
 
-     @GET("movie/{movie_id}")
-     suspend fun getMovieDetail(@Path("movie_id") movieId:String) : Response<Movie>
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetail(@Path("movie_id") movieId: String): Response<Movie>
 }

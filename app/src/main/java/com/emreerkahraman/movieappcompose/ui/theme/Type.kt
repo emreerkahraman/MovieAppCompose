@@ -30,7 +30,7 @@ val Typography = Typography(
     */
 )
 
- val poppinsFamily = FontFamily(
+val poppinsFamily = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light),
     Font(R.font.poppins_regular, FontWeight.Normal),
     Font(R.font.poppins_italic, FontWeight.Normal, FontStyle.Italic),

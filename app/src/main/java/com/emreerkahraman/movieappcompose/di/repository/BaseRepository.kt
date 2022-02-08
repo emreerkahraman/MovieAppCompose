@@ -7,7 +7,6 @@ import retrofit2.Response
 
 open class BaseRepository {
 
-
     fun <T> responseWrapper(remoteCall: suspend () -> Response<T>): Flow<Resource<T?>> =
         flow {
             emit(Resource.loading())
@@ -16,6 +15,4 @@ open class BaseRepository {
         }.catch { throwable ->
             emit(Resource.error(throwable))
         }
-
-
 }

@@ -33,6 +33,5 @@ fun MovieItem(
                     onClickMovie.invoke(movie)
                 }
         )
-
     }
 }
