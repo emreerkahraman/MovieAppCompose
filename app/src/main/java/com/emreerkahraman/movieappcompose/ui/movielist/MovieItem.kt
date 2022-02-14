@@ -3,7 +3,7 @@ package com.emreerkahraman.movieappcompose.ui.movielist
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +25,9 @@ fun MovieItem(
             painter = rememberImagePainter("https://image.tmdb.org/t/p/w342/${movie.posterPath}"),
             contentDescription = null,
             modifier = modifier
-                .padding(end = 16.dp)
-                .width(150.dp)
-                .aspectRatio(0.66f)
+                .padding(end = 8.dp)
+                .width(100.dp)
+                .height(150.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .clickable {
                     onClickMovie.invoke(movie)

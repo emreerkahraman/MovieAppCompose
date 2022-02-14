@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -79,7 +80,7 @@ private fun MovieDetail(
             .verticalScroll(rememberScrollState())
     ) {
 
-        Toolbar(title = stringResource(R.string.movie_detail)) {
+        Toolbar(title = movie?.title.toString()) {
             onClickBack.invoke()
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -90,8 +91,8 @@ private fun MovieDetail(
                 modifier = Modifier.height(300.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                CategoryCard()
                 RuntimeCard(movie?.runtime.toString())
+                CategoryCard(movie?.voteCount.toString())
                 RatingCard(movie?.voteAverage.toString())
             }
         }
@@ -132,7 +133,7 @@ private fun PosterImage(posterPath: String?) {
 }
 
 @Composable
-private fun CategoryCard() {
+private fun CategoryCard(vote: String?) {
     Card(
         modifier = Modifier
             .width(80.dp)
@@ -150,8 +151,8 @@ private fun CategoryCard() {
                 painter = rememberImagePainter(R.drawable.ic_category),
                 contentDescription = null
             )
-            Text(text = "Category")
-            Text(text = "Category")
+            Text(text = stringResource(R.string.vote))
+            Text(text = vote.toString())
         }
     }
 }
@@ -175,7 +176,7 @@ private fun RuntimeCard(runtime: String?) {
                 contentDescription = null
             )
             Text(text = stringResource(R.string.duration))
-            Text(text = runtime.toString())
+            Text(text = runtime.toString() + " m")
         }
     }
 }
@@ -207,15 +208,21 @@ private fun RatingCard(rating: String?) {
 @Composable
 fun Toolbar(title: String, onClickBack: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = {
-            onClickBack.invoke()
-        }) {
+        IconButton(
+            onClick = {
+                onClickBack.invoke()
+            }
+        ) {
             Icon(Icons.Default.ArrowBack, contentDescription = null)
         }
         Text(
+
             text = title,
             fontFamily = poppinsFamily,
-            fontWeight = FontWeight.Normal, fontSize = 16.sp
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

@@ -11,7 +11,8 @@ data class Movie(
     @field:Json(name = "backdrop_path")
     val backdropPath: String?,
     @field:Json(name = "belongs_to_collection")
-    val belongsToCollection: String?,
+    @Json(name = "belongs_to_collection")
+    val belongsToCollection: BelongsToCollection?,
     @field:Json(name = "budget")
     val budget: Int?,
     @field:Json(name = "genres")

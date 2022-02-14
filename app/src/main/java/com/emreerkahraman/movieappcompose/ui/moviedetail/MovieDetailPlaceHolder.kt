@@ -24,12 +24,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.material.fade
 import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 
 @ExperimentalPagerApi
 @Composable
@@ -72,10 +73,7 @@ private fun SynopsisPlaceHolder() {
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .placeholder(
-                visible = true,
-                highlight = PlaceholderHighlight.fade()
-            )
+            .shimmerPlaceHolder(),
     )
 }
 
@@ -85,10 +83,7 @@ private fun SynopsisTitlePlaceHolder() {
         text = "",
         modifier = Modifier
             .fillMaxWidth()
-            .placeholder(
-                visible = true,
-                highlight = PlaceholderHighlight.fade()
-            )
+            .shimmerPlaceHolder(),
     )
 }
 
@@ -98,10 +93,7 @@ private fun DividerPlaceHolder() {
         color = MaterialTheme.colors.secondary,
         modifier = Modifier
             .height(1.dp)
-            .placeholder(
-                visible = true,
-                highlight = PlaceholderHighlight.fade()
-            )
+            .shimmerPlaceHolder()
     )
 }
 
@@ -112,10 +104,7 @@ private fun TitlePlaceHolder() {
         modifier = Modifier
             .fillMaxWidth()
             .height(24.dp)
-            .placeholder(
-                visible = true,
-                highlight = PlaceholderHighlight.fade()
-            )
+            .shimmerPlaceHolder()
     )
 }
 
@@ -128,20 +117,14 @@ private fun ToolbarPlaceHolder() {
                 Icons.Default.ArrowBack, contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .placeholder(
-                        visible = true,
-                        highlight = PlaceholderHighlight.fade(),
-                    )
+                    .shimmerPlaceHolder()
             )
         }
         Text(
             text = "",
             modifier = Modifier
                 .fillMaxWidth()
-                .placeholder(
-                    visible = true,
-                    highlight = PlaceholderHighlight.fade(),
-                )
+                .shimmerPlaceHolder()
         )
     }
 }
@@ -153,10 +136,7 @@ private fun PosterPlaceHolder() {
             .width(200.dp)
             .height(300.dp)
             .clip(RoundedCornerShape(8.dp))
-            .placeholder(
-                visible = true,
-                highlight = PlaceholderHighlight.fade(),
-            )
+            .shimmerPlaceHolder()
     ) {}
 }
 
@@ -172,13 +152,20 @@ private fun MovieInfoCardsPlaceHolder() {
                 modifier = Modifier
                     .width(80.dp)
                     .height(80.dp)
-                    .placeholder(
-                        visible = true,
-                        highlight = PlaceholderHighlight.fade(),
-                    ),
+                    .shimmerPlaceHolder(),
                 backgroundColor = MaterialTheme.colors.primary,
                 border = BorderStroke(1.dp, MaterialTheme.colors.secondary)
             ) {}
         }
     }
 }
+
+
+fun Modifier.shimmerPlaceHolder() = composed {
+    this.placeholder(
+        visible = true,
+        highlight = PlaceholderHighlight.shimmer(),
+        color = MaterialTheme.colors.secondary
+    )
+}
+

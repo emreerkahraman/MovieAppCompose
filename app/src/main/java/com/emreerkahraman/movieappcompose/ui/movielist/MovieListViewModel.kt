@@ -9,6 +9,7 @@ import com.emreerkahraman.movieappcompose.model.Popular
 import com.emreerkahraman.movieappcompose.model.Resource
 import com.emreerkahraman.movieappcompose.model.Upcoming
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,23 +27,28 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
         getUpcoming()
     }
 
-    fun getNowPlaying() {
+    private fun getNowPlaying() {
         viewModelScope.launch {
             movieRepository.getNowPlaying().collect {
+                delay(500L)
                 onGetNowPlaying(it)
             }
         }
     }
-    fun getPopular() {
+
+    private fun getPopular() {
         viewModelScope.launch {
             movieRepository.getPopular().collect {
+                delay(500L)
                 onGetPopular(it)
             }
         }
     }
-    fun getUpcoming() {
+
+    private fun getUpcoming() {
         viewModelScope.launch {
             movieRepository.getUpcoming().collect {
+                delay(500L)
                 onGetUpcoming(it)
             }
         }
@@ -55,6 +61,7 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
             movieList = resource.data?.movieList
         )
     }
+
     private fun onGetPopular(resource: Resource<Popular?>) {
         popularViewState.value = MovieListViewState(
             status = resource.status,

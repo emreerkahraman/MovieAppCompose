@@ -8,4 +8,5 @@
     <string name="rating">Rating</string>
     <string name="category">Category</string>
     <string name="duration">Duration</string>
+    <string name="vote">Vote</string>
 </resources>
