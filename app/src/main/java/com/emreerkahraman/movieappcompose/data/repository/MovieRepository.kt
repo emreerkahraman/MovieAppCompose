@@ -1,23 +1,18 @@
 package com.emreerkahraman.movieappcompose.data.repository
 
-import com.emreerkahraman.movieappcompose.api.TmdbService
-import javax.inject.Inject
+import com.emreerkahraman.movieappcompose.model.Movie
+import com.emreerkahraman.movieappcompose.model.NowPlaying
+import com.emreerkahraman.movieappcompose.model.Popular
+import com.emreerkahraman.movieappcompose.model.Resource
+import com.emreerkahraman.movieappcompose.model.Upcoming
+import kotlinx.coroutines.flow.Flow
 
-class MovieRepository @Inject constructor(private val service: TmdbService) : BaseRepository() {
+interface MovieRepository {
+    suspend fun getNowPlaying(): Flow<Resource<NowPlaying?>>
 
-    suspend fun getNowPlaying() = responseWrapper {
-        service.getNowPlaying()
-    }
+    suspend fun getPopular(): Flow<Resource<Popular?>>
 
-    suspend fun getPopular() = responseWrapper {
-        service.getPopular()
-    }
+    suspend fun getUpcoming(): Flow<Resource<Upcoming?>>
 
-    suspend fun getUpcoming() = responseWrapper {
-        service.getUpcoming()
-    }
-
-    suspend fun getMovieDetail(movieId: String) = responseWrapper {
-        service.getMovieDetail(movieId)
-    }
+    suspend fun getMovieDetail(movieId: String): Flow<Resource<Movie?>>
 }

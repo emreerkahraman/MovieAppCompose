@@ -2,6 +2,7 @@ package com.emreerkahraman.movieappcompose.di.repository
 
 import com.emreerkahraman.movieappcompose.api.TmdbService
 import com.emreerkahraman.movieappcompose.data.repository.MovieRepository
+import com.emreerkahraman.movieappcompose.data.repository.MovieRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +16,6 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideMovieRepository(tmdbService: TmdbService): MovieRepository {
-        return MovieRepository(tmdbService)
+        return MovieRepositoryImpl(tmdbService)
     }
 }
