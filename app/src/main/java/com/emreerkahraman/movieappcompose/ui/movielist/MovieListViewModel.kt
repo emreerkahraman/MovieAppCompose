@@ -4,31 +4,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.emreerkahraman.movieappcompose.data.repository.MovieRepository
+import com.emreerkahraman.movieappcompose.di.dispatcher.IoDispatcher
 import com.emreerkahraman.movieappcompose.model.NowPlaying
 import com.emreerkahraman.movieappcompose.model.Popular
 import com.emreerkahraman.movieappcompose.model.Resource
 import com.emreerkahraman.movieappcompose.model.Upcoming
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(private val movieRepository: MovieRepository) :
+class MovieListViewModel @Inject constructor(
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    private val movieRepository: MovieRepository,
+) :
     ViewModel() {
     var nowPlayingViewState = mutableStateOf(MovieListViewState())
     var popularViewState = mutableStateOf(MovieListViewState())
     var upcomingMovieState = mutableStateOf(MovieListViewState())
 
-    init {
-        getNowPlaying()
-        getPopular()
-        getUpcoming()
-    }
-
-    private fun getNowPlaying() {
-        viewModelScope.launch {
+    fun getNowPlaying() {
+        viewModelScope.launch(dispatcher) {
             movieRepository.getNowPlaying().collect {
                 delay(500L)
                 onGetNowPlaying(it)
@@ -36,8 +34,8 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
         }
     }
 
-    private fun getPopular() {
-        viewModelScope.launch {
+    fun getPopular() {
+        viewModelScope.launch(dispatcher) {
             movieRepository.getPopular().collect {
                 delay(500L)
                 onGetPopular(it)
@@ -45,8 +43,8 @@ class MovieListViewModel @Inject constructor(private val movieRepository: MovieR
         }
     }
 
-    private fun getUpcoming() {
-        viewModelScope.launch {
+    fun getUpcoming() {
+        viewModelScope.launch(dispatcher) {
             movieRepository.getUpcoming().collect {
                 delay(500L)
                 onGetUpcoming(it)

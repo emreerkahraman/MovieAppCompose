@@ -13,7 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,6 +29,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalPagerApi
 @Composable
 fun MovieList(viewModel: MovieListViewModel, onClickMovie: (Movie) -> Unit) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,21 +37,27 @@ fun MovieList(viewModel: MovieListViewModel, onClickMovie: (Movie) -> Unit) {
 
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        NowPlayingMovieList(viewModel.nowPlayingViewState, onClickMovie = onClickMovie)
+        NowPlayingMovieList(viewModel, onClickMovie = onClickMovie)
         Spacer(modifier = Modifier.height(16.dp))
-        PopularMovieList(viewModel.popularViewState, onClickMovie = onClickMovie)
+        PopularMovieList(viewModel, onClickMovie = onClickMovie)
         Spacer(modifier = Modifier.height(16.dp))
-        UpcomingMovieList(viewModel.upcomingMovieState, onClickMovie = onClickMovie)
+        UpcomingMovieList(viewModel, onClickMovie = onClickMovie)
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 @Composable
 fun NowPlayingMovieList(
-    nowPlayingViewState: State<MovieListViewState>,
+    viewModel: MovieListViewModel,
     onClickMovie: (Movie) -> Unit,
 ) {
-    val nowPlayingState: MovieListViewState by nowPlayingViewState
+    val nowPlayingState: MovieListViewState by viewModel.nowPlayingViewState
+    if (nowPlayingState.isInitialized().not()) {
+        LaunchedEffect(true) {
+            viewModel.getNowPlaying()
+        }
+    }
+
     when (nowPlayingState.status) {
 
         Status.SUCCESS -> {
@@ -75,10 +82,15 @@ fun NowPlayingMovieList(
 
 @Composable
 fun PopularMovieList(
-    popularMovieViewState: State<MovieListViewState>,
+    viewModel: MovieListViewModel,
     onClickMovie: (Movie) -> Unit,
 ) {
-    val popularViewState: MovieListViewState by popularMovieViewState
+    val popularViewState: MovieListViewState by viewModel.popularViewState
+    if (popularViewState.isInitialized().not()) {
+        LaunchedEffect(true) {
+            viewModel.getPopular()
+        }
+    }
     when (popularViewState.status) {
         Status.SUCCESS -> {
             Column {
@@ -100,11 +112,15 @@ fun PopularMovieList(
 
 @Composable
 fun UpcomingMovieList(
-    upComingMovieViewState: State<MovieListViewState>,
+    viewModel: MovieListViewModel,
     onClickMovie: (Movie) -> Unit,
 ) {
-    val upcomingMovieState: MovieListViewState by upComingMovieViewState
-
+    val upcomingMovieState: MovieListViewState by viewModel.upcomingMovieState
+    if (upcomingMovieState.isInitialized().not()) {
+        LaunchedEffect(true) {
+            viewModel.getUpcoming()
+        }
+    }
     when (upcomingMovieState.status) {
         Status.SUCCESS -> {
             Column {

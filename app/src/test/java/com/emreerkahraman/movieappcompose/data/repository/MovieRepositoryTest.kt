@@ -8,7 +8,7 @@ import com.emreerkahraman.movieappcompose.model.NowPlaying
 import com.emreerkahraman.movieappcompose.model.Popular
 import com.emreerkahraman.movieappcompose.model.Status
 import com.emreerkahraman.movieappcompose.model.Upcoming
-import com.emreerkahraman.movieappcompose.util.CoroutineTestRule
+import com.emreerkahraman.movieappcompose.util.MainCoroutineRule
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.flow.first
@@ -34,7 +34,7 @@ class MovieRepositoryTest {
     private lateinit var tmdbService: TmdbService
 
     @get:Rule
-    val coroutineTestRule = CoroutineTestRule()
+    val mainCoroutineRule = MainCoroutineRule()
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -139,7 +139,7 @@ class MovieRepositoryTest {
                 getUpcoming()
             }.doReturn(upComing)
         }
-        val result = movieRepository.getNowPlaying()
+        val result = movieRepository.getUpcoming()
 
         result.collect {
             if (it.status == Status.SUCCESS) {
@@ -163,7 +163,7 @@ class MovieRepositoryTest {
                 getPopular()
             }.doReturn(popular)
         }
-        val result = movieRepository.getNowPlaying()
+        val result = movieRepository.getPopular()
 
         result.collect {
             if (it.status == Status.SUCCESS) {
