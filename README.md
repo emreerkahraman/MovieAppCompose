@@ -12,6 +12,7 @@
 * Moshi
 * Detekt
 * Ktlint
+* Mockk
 
 
 ## Screenshots
@@ -24,7 +25,6 @@
 
 
 ## Todo
-* Write Unit Test
 * Make modular
 
 
